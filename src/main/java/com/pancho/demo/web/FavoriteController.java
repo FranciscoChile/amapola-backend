@@ -1,4 +1,4 @@
-package com.pancho.demo.controller;
+package com.pancho.demo.web;
 
 import java.util.List;
 

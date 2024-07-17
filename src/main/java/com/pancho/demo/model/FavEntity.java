@@ -22,7 +22,7 @@ import lombok.Setter;
 @Table(name = "FAVORITE")
 public class FavEntity {
     
-    @Id	
+    @Id
 	private Long id;
 
     private String title;

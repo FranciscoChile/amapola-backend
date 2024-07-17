@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.pancho.demo.controller.FavoriteController;
+import com.pancho.demo.web.FavoriteController;
 import com.pancho.demo.model.APIResponse;
 import com.pancho.demo.model.FavDTO;
 import com.pancho.demo.service.FavoriteService;
