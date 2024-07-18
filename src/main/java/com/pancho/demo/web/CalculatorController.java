@@ -3,6 +3,7 @@ package com.pancho.demo.web;
 import com.pancho.demo.model.APIResponse;
 import com.pancho.demo.model.CalcRequest;
 import com.pancho.demo.model.EnumOperation;
+import com.pancho.demo.service.UserRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,9 @@ public class CalculatorController {
 
     @Autowired
     Mediator mediator;
+
+    @Autowired
+    private UserRecordService userRecordService;
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.OK)
@@ -62,5 +66,16 @@ public class CalculatorController {
     public ResponseEntity<APIResponse> loadData() {
         CalcRequest calcRequest = CalcRequest.builder().operation(EnumOperation.LOAD_DATA.toString()).build();
         return mediator.handler(calcRequest);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<APIResponse> getUserRecords() {
+        APIResponse apiResponse = new APIResponse();
+        apiResponse.setData(userRecordService.findAll());
+        apiResponse.setResponseCode(HttpStatus.OK);
+        apiResponse.setMessage("Successfully executed");
+
+        return new ResponseEntity<>(apiResponse, apiResponse.getResponseCode());
     }
 }

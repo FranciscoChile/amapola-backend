@@ -1,16 +1,16 @@
 package com.pancho.demo.web;
 
 import com.pancho.demo.exception.DataValidationException;
-import com.pancho.demo.model.APIResponse;
-import com.pancho.demo.model.CalcRequest;
-import com.pancho.demo.model.CalcResponse;
-import com.pancho.demo.model.EnumOperation;
+import com.pancho.demo.model.*;
 import com.pancho.demo.service.CalculatorService;
+import com.pancho.demo.service.UserRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
 
 import static com.pancho.demo.model.EnumOperation.ADDITION;
 
@@ -23,7 +23,6 @@ public class Mediator {
     public ResponseEntity<APIResponse> handler (CalcRequest calcRequest) {
 
         CalcResponse calcResponse = new CalcResponse();
-
         try {
 
             if (!calcRequest.getOperation().isEmpty()) {
