@@ -20,9 +20,9 @@ public class RecordOperation {
 
     private Long operationId;
     private Long userId;
-    private Double amount;
-    private int operationCost;
+    private int amount;
     private String operationResponse;
     private Date date;
+    private boolean visible;
 
 }

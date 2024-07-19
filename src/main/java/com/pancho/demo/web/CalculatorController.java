@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/calculator")
@@ -77,5 +78,20 @@ public class CalculatorController {
         apiResponse.setMessage("Successfully executed");
 
         return new ResponseEntity<>(apiResponse, apiResponse.getResponseCode());
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<APIResponse> deleteUserRecord(@PathVariable String id) {
+        try {
+            userRecordService.delete(Long.valueOf(id));
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.setResponseCode(HttpStatus.OK);
+            apiResponse.setMessage("Successfully executed");
+
+            return new ResponseEntity<>(apiResponse, apiResponse.getResponseCode());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 }

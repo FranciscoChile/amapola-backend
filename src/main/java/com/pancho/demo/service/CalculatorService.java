@@ -37,21 +37,12 @@ public class CalculatorService {
         if (!creditBalanceAvailable(calcRequest)) {
             throw new DataValidationException("No credit available");
         }
-
         List<Double> values = calcRequest.getValues();
+        if (values.isEmpty()) {
+            throw new DataValidationException("No values present");
+        }
         double result = values.stream().mapToDouble(Double::doubleValue).sum();
-
-        RecordOperation recordOperation = RecordOperation.builder()
-                .operationId(1L)
-                .userId(calcRequest.getUserId())
-                .amount(result)
-                .operationCost(operation.getCost())
-                .operationResponse("")
-                .date(new Date())
-                .build();
-
-        recordRepository.save(recordOperation);
-
+        saveOperation(calcRequest.getUserId(), operation, String.valueOf(result));
         return CalcResponse.builder()
                 .result(String.valueOf(result))
                 .operation(EnumOperation.ADDITION.toString())
@@ -78,6 +69,8 @@ public class CalculatorService {
 
         double result = Math.abs(values.get(0) - values.get(1));
 
+        saveOperation(calcRequest.getUserId(), operation, String.valueOf(result));
+
         return CalcResponse.builder()
                 .result(String.valueOf(result))
                 .operation(EnumOperation.SUBTRACTION.toString())
@@ -97,7 +90,9 @@ public class CalculatorService {
             throw new DataValidationException("No values present");
         }
 
-        double result = values.stream().reduce(0d, (a,b) -> (a * b));
+        double result = values.get(0) * values.get(1);
+
+        saveOperation(calcRequest.getUserId(), operation, String.valueOf(result));
 
         return CalcResponse.builder()
                 .result(String.valueOf(result))
@@ -124,6 +119,8 @@ public class CalculatorService {
 
         double result = Math.abs(values.get(0) / values.get(1));
 
+        saveOperation(calcRequest.getUserId(), operation, String.valueOf(result));
+
         return CalcResponse.builder()
                 .result(String.valueOf(result))
                 .operation(EnumOperation.MULTIPLICATION.toString())
@@ -149,6 +146,8 @@ public class CalculatorService {
 
         double result = Math.sqrt(values.get(0));
 
+        saveOperation(calcRequest.getUserId(), operation, String.valueOf(result));
+
         return CalcResponse.builder()
                 .result(String.valueOf(result))
                 .operation(EnumOperation.MULTIPLICATION.toString())
@@ -164,6 +163,8 @@ public class CalculatorService {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> randomString = restTemplate.getForEntity(urlRandom, String.class );
+
+        saveOperation(calcRequest.getUserId(), operation, Objects.requireNonNull(randomString.getBody()).replace("\n", ""));
 
         return CalcResponse.builder()
                 .result(Objects.requireNonNull(randomString.getBody()).replace("\n", ""))
@@ -216,5 +217,19 @@ public class CalculatorService {
         }
 
         return true;
+    }
+
+    private void saveOperation(Long userId, Operation operation, String result) {
+
+        RecordOperation recordOperation = RecordOperation.builder()
+                .operationId(operation.getId())
+                .userId(userId)
+                .amount(operation.getCost())
+                .operationResponse(result)
+                .date(new Date())
+                .visible(true)
+                .build();
+
+        recordRepository.save(recordOperation);
     }
 }
