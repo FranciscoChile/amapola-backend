@@ -6,7 +6,7 @@ https://academic-genius-429303-r2.uc.r.appspot.com
 
 ## Load data
 
-- Before to start is needed load basic data (Math Operation) using /api/calculator/load-data
+- Before to start is needed load basic data (Math Operations) using /api/calculator/load-data
 - For testing purposes user Id is always "1"
 - Postman collections available
 
