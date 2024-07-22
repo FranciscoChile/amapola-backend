@@ -10,14 +10,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "RECORD")
-public class RecordOperation {
+public class RecordOperationDTO {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
     private String operationType;
     private Long userId;
     private int amount;

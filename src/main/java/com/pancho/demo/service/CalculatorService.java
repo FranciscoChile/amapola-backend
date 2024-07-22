@@ -222,7 +222,7 @@ public class CalculatorService {
     private void saveOperation(Long userId, Operation operation, String result) {
 
         RecordOperation recordOperation = RecordOperation.builder()
-                .operationId(operation.getId())
+                .operationType(operation.getOperationType())
                 .userId(userId)
                 .amount(operation.getCost())
                 .operationResponse(result)
